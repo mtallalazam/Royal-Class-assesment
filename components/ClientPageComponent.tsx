@@ -6,11 +6,6 @@ import DynamicUserForm from "@/components/DynamicUserForm";
 import { formOptions } from "@/lib/formQueryOptions";
 
 const ClientPageComponent = () => {
-    // const queryClient = useQueryClient();
-
-    
-
-    // const { isLoading, data, isError } = useQuery(formOptions);
 	const { data, isError, isLoading } = useSuspenseQuery(formOptions)
 
 
