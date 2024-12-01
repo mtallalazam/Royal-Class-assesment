@@ -4,41 +4,56 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import DynamicFormField from "./DynamicFormField";
-import { FormField } from "@/lib/types/types";
+import { FormFieldType } from "@/lib/types/types";
+import { Button } from "@/components/ui/button";
+import { Form, FormField } from "@/components/ui/form";
 
 const formSchema = z.object({
-	name_8066610423: z.string(),
-	age_12345: z.number(),
-	terms_001: z.boolean(),
+    name_8066610423: z.string(),
+    age_12345: z.coerce.number(),
+    terms_001: z.boolean(),
 });
 
-
-const DynamicUserForm = ({ formFields }: { formFields: FormField[] }) => {
+const DynamicUserForm = ({ formFields }: { formFields: FormFieldType[] }) => {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
-        defaultValues: {},
+        defaultValues: {
+			name_8066610423: "some string",
+			age_12345: 23,
+			terms_001: true,
+		},
     });
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        console.log(values);
+        console.log({values});
     }
 
     return (
         <>
-            <div className="mb-6">{JSON.stringify(formFields)}</div>
+            <Form {...form}>
+                <form
+                    className="flex flex-col"
+                    onSubmit={form.handleSubmit(onSubmit)}
+                >
+                    {formFields.map((formField) => {
+                        return (
+                            <FormField
+                                key={formField.rowIndex}
+                                control={form.control}
+                                name={formField.name}
+                                render={({ field }) => (
+                                    <DynamicFormField
+										{...field}
+                                        formField={formField}
+                                    />
+                                )}
+                            />
+                        );
+                    })}
 
-            <form className="mx-auto max-w-screen-md flex flex-col">
-                {formFields.map((formField) => {
-                    return (
-                        <DynamicFormField
-                            key={formField.rowIndex}
-                            formField={formField}
-                        />
-                    );
-                })}
-            </form>
+                    <Button type="submit" className="w-fit">Submit</Button>
+                </form>
+            </Form>
         </>
     );
 };

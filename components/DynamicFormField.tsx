@@ -2,41 +2,47 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Checkbox } from "./ui/checkbox";
 
-import { FormField } from "@/lib/types/types";
+import { FormFieldType } from "@/lib/types/types";
+import {
+    FormControl,
+    FormDescription,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
 
-const DynamicFormField = ({ formField } : { formField: FormField }) => {
+const DynamicFormField = (props: { formField: FormFieldType }) => {
+    const formField = props.formField;
+
     if (formField.variant == "Checkbox") {
         return (
-            <div className="items-top flex space-x-2 mb-5">
-                <Checkbox id={formField.name} />
-                <div className="grid gap-1.5 leading-none">
-                    <label
-                        htmlFor={formField.name}
-                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                        {formField.label}
-                    </label>
-					{
-						formField.description && (
-							<p className="text-sm text-muted-foreground">
-								{formField.description}
-							</p>
-						)
-					}
-                </div>
-            </div>
+            <FormItem className="flex space-x-2 items-center mb-5">
+                <FormControl>
+                    <Checkbox id={formField.name} checked={props.value} onCheckedChange={props.onChange} />
+                </FormControl>
+                <FormLabel className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                    {formField.label}
+                </FormLabel>
+                <FormMessage />
+            </FormItem>
         );
     }
 
     if (formField.variant == "Input") {
         return (
-            <div className="flex flex-col mb-5">
-                {formField.label && <Label className="mb-3">{formField.label}</Label>}
-                <Input
-                    type={formField.type}
-                    placeholder={formField.placeholder}
-                />
-            </div>
+            <FormItem className="mb-5 space-y-2">
+                <FormLabel>{formField.label}</FormLabel>
+                <FormControl>
+                    <Input
+                        placeholder={formField.placeholder}
+                        value={props.value}
+                        onChange={props.onChange}
+                        type={formField.type}
+                    />
+                </FormControl>
+                <FormDescription>{formField.description}</FormDescription>
+                <FormMessage />
+            </FormItem>
         );
     }
 };

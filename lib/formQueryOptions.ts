@@ -1,8 +1,8 @@
 import { queryOptions } from '@tanstack/react-query';
 
-import { FormField } from './types/types';
+import { FormFieldType } from './types/types';
 
-const fetchFormFields = async (): Promise<FormField[]> => {
+const fetchFormFields = async (): Promise<FormFieldType[]> => {
 	const response = await fetch("/api/forms/user-form");
 	const data = await response.json();
 	return data;

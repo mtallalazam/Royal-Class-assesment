@@ -12,8 +12,8 @@ const StaticPage = () => {
     void queryClient.prefetchQuery(formOptions);
 
     return (
-        <div>
-            <h2>Static Page Data Fetching</h2>
+        <div className="max-w-screen-md mx-auto">
+            <h2 className="font-bold mb-4">Static Page Data Fetching</h2>
             <HydrationBoundary state={dehydrate(queryClient)}>
                 <ClientPageComponent />
             </HydrationBoundary>
