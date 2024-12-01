@@ -13,7 +13,7 @@ const formSchema = z.object({
 });
 
 
-const DynamicUserForm = ({ formFields }: { formFields: Array<FormField> }) => {
+const DynamicUserForm = ({ formFields }: { formFields: FormField[] }) => {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {},
